@@ -10,7 +10,7 @@ public class approvalMatrixInput implements java.io.Serializable {
 
 	private java.lang.String facilityProduct;
 	private Double amount;
-	private java.lang.Integer securityCoverage;
+	private Double securityCoverage;
 
 	public approvalMatrixInput() {
 	}
@@ -23,14 +23,6 @@ public class approvalMatrixInput implements java.io.Serializable {
 		this.facilityProduct = facilityProduct;
 	}
 
-	public java.lang.Integer getSecurityCoverage() {
-		return this.securityCoverage;
-	}
-
-	public void setSecurityCoverage(java.lang.Integer securityCoverage) {
-		this.securityCoverage = securityCoverage;
-	}
-
 	public java.lang.Double getAmount() {
 		return this.amount;
 	}
@@ -39,8 +31,16 @@ public class approvalMatrixInput implements java.io.Serializable {
 		this.amount = amount;
 	}
 
+	public java.lang.Double getSecurityCoverage() {
+		return this.securityCoverage;
+	}
+
+	public void setSecurityCoverage(java.lang.Double securityCoverage) {
+		this.securityCoverage = securityCoverage;
+	}
+
 	public approvalMatrixInput(java.lang.String facilityProduct,
-			java.lang.Double amount, java.lang.Integer securityCoverage) {
+			java.lang.Double amount, java.lang.Double securityCoverage) {
 		this.facilityProduct = facilityProduct;
 		this.amount = amount;
 		this.securityCoverage = securityCoverage;
