@@ -84,21 +84,21 @@ System.out.println(requestmap);
 String str[] = requestmap.split("=");
 if(requestmap.contains("requestId"))
 {
-String rId = str[1];
-System.out.println(rId.substring(0,rId.length()-1));
-kcontext.setVariable("requestId",rId.substring(0,rId.length()-1));
+    String rId = str[1];
+    System.out.println(rId.substring(0,rId.length()-1));
+    kcontext.setVariable("requestId",rId.substring(0,rId.length()-1));
 }
 if(requestmap.contains("partyId"))
 {
-String pId = str[1];
-System.out.println(pId.substring(0,pId.length()-1));
-kcontext.setVariable("partyId",pId.substring(0,pId.length()-1));
+    String pId = str[1];
+    System.out.println(pId.substring(0,pId.length()-1));
+    kcontext.setVariable("partyId",pId.substring(0,pId.length()-1));
 }
 if(requestmap.contains("facilityId"))
 {
-String fId = str[1];
-System.out.println(fId.substring(0,fId.length()-1));
-kcontext.setVariable("facilityId",fId.substring(0,fId.length()-1));
+    String fId = str[1];
+    System.out.println(fId.substring(0,fId.length()-1));
+    kcontext.setVariable("facilityId",fId.substring(0,fId.length()-1));
 }
 ]]></bpmn2:script>
     </bpmn2:scriptTask>

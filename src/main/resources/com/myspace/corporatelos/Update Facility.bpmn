@@ -31,6 +31,12 @@
   <bpmn2:itemDefinition id="__4C3B0492-29F8-484D-96B2-616DFDAEFBA0_AuthorizationOutputXItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__4C3B0492-29F8-484D-96B2-616DFDAEFBA0_ResultOutputXItem" structureRef="String"/>
   <bpmn2:process id="CorporateLOS.UpdateFacility" drools:packageName="com.myspace.corporatelos" drools:version="1.0" drools:adHoc="false" name="Update Facility" isExecutable="true" processType="Public">
+    <bpmn2:extensionElements>
+      <drools:import name="java.util.HashMap"/>
+      <drools:import name="com.google.gson.Gson"/>
+      <drools:import name="com.google.gson.JsonObject"/>
+      <drools:import name="com.google.gson.JsonParser"/>
+    </bpmn2:extensionElements>
     <bpmn2:property id="facilityId" itemSubjectRef="_facilityIdItem" name="facilityId"/>
     <bpmn2:property id="payloadMap" itemSubjectRef="_payloadMapItem" name="payloadMap"/>
     <bpmn2:property id="response" itemSubjectRef="_responseItem" name="response"/>
@@ -61,7 +67,7 @@
           <drools:metaValue><![CDATA[Update Facility]]></drools:metaValue>
         </drools:metaData>
         <drools:onEntry-script scriptFormat="http://www.java.com/java">
-          <drools:script><![CDATA[com.google.gson.JsonObject respObj = new com.google.gson.JsonParser().parse(kcontext.getVariable("response").toString()).getAsJsonObject();
+          <drools:script><![CDATA[JsonObject respObj = new JsonParser().parse(kcontext.getVariable("response").toString()).getAsJsonObject();
 System.out.println("resp obj: " + respObj);
 if(kcontext.getVariable("processId")!= null){
 respObj.addProperty("activeProcessId",kcontext.getVariable("processId").toString());
@@ -162,7 +168,7 @@ kcontext.setVariable("payloadMap",map);
           <drools:metaValue><![CDATA[Get Facility]]></drools:metaValue>
         </drools:metaData>
         <drools:onEntry-script scriptFormat="http://www.java.com/java">
-          <drools:script><![CDATA[java.util.HashMap requestMap = new java.util.HashMap();
+          <drools:script><![CDATA[HashMap requestMap = new HashMap();
 requestMap.put("requestId",kcontext.getVariable("requestId").toString());
 requestMap.put("facilityId",kcontext.getVariable("facilityId").toString());
 kcontext.setVariable("payloadMap",requestMap);
