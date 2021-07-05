@@ -12,8 +12,8 @@ public class DecisionParams implements java.io.Serializable {
 	private java.lang.Integer bankRelationship;
 	private java.lang.Integer yearsOfOperation;
 	private java.lang.String managementAssessment;
-	private java.lang.Integer tolRatio;
-	private java.lang.Integer dscr;
+	private Double tolRatio;
+	private Double dscr;
 	private java.lang.Integer salesTurnOverGrowth;
 	private java.lang.Integer cashFlowOperation;
 	private java.lang.Integer inwardChequeReturns;
@@ -54,22 +54,6 @@ public class DecisionParams implements java.io.Serializable {
 		this.managementAssessment = managementAssessment;
 	}
 
-	public java.lang.Integer getTolRatio() {
-		return this.tolRatio;
-	}
-
-	public void setTolRatio(java.lang.Integer tolRatio) {
-		this.tolRatio = tolRatio;
-	}
-
-	public java.lang.Integer getDscr() {
-		return this.dscr;
-	}
-
-	public void setDscr(java.lang.Integer dscr) {
-		this.dscr = dscr;
-	}
-
 	public java.lang.Integer getSalesTurnOverGrowth() {
 		return this.salesTurnOverGrowth;
 	}
@@ -102,11 +86,27 @@ public class DecisionParams implements java.io.Serializable {
 		this.creditSummation = creditSummation;
 	}
 
+	public java.lang.Double getTolRatio() {
+		return this.tolRatio;
+	}
+
+	public void setTolRatio(java.lang.Double tolRatio) {
+		this.tolRatio = tolRatio;
+	}
+
+	public java.lang.Double getDscr() {
+		return this.dscr;
+	}
+
+	public void setDscr(java.lang.Double dscr) {
+		this.dscr = dscr;
+	}
+
 	public DecisionParams(java.lang.Integer bureauScore,
 			java.lang.Integer bankRelationship,
 			java.lang.Integer yearsOfOperation,
-			java.lang.String managementAssessment, java.lang.Integer tolRatio,
-			java.lang.Integer dscr, java.lang.Integer salesTurnOverGrowth,
+			java.lang.String managementAssessment, java.lang.Double tolRatio,
+			java.lang.Double dscr, java.lang.Integer salesTurnOverGrowth,
 			java.lang.Integer cashFlowOperation,
 			java.lang.Integer inwardChequeReturns,
 			java.lang.Integer creditSummation) {

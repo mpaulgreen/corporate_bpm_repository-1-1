@@ -89,7 +89,7 @@ if(kcontext.getVariable("currencyId")!= null){
 respObj.addProperty("currencyId",kcontext.getVariable("currencyId").toString());
 System.out.println("resp obj: " + respObj);
 }
-com.google.gson.Gson gson = new com.google.gson.Gson();
+Gson gson = new Gson();
 java.util.HashMap map = gson.fromJson(respObj,java.util.HashMap.class);
 System.out.println("map: " + map.entrySet());
 kcontext.setVariable("payloadMap",map);
