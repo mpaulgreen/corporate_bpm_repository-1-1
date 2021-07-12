@@ -16,12 +16,23 @@ public class DueDiligenceScripts implements java.io.Serializable {
 		try {
 			org.json.JSONObject responseObj = new org.json.JSONObject(kcontext
 					.getVariable("response").toString());
-			if (!responseObj.isNull("ltvRatio")
-					&& !responseObj.get("ltvRatio").equals("")) {
-				String ltvStr = responseObj.get("ltvRatio").toString();
-				Double ltv = Double.parseDouble(ltvStr);
-				if (ltv <= 100) {
-					kcontext.setVariable("result", true);
+			if (responseObj.has("collaterals")) {
+				org.json.JSONArray collaterals = responseObj
+						.getJSONArray("collaterals");
+				System.out.println(collaterals.toString());
+				org.json.JSONObject indObj = (org.json.JSONObject) collaterals
+						.get(0);
+				org.json.JSONObject indCollateral = new org.json.JSONObject(
+						indObj.get("collateralOverview").toString());
+				if (!indCollateral.isNull("ltvRatio")
+						&& !indCollateral.get("ltvRatio").equals("")) {
+					String ltvStr = indCollateral.get("ltvRatio").toString();
+					Double ltv = Double.parseDouble(ltvStr);
+					if (ltv <= 100) {
+						kcontext.setVariable("result", true);
+					} else {
+						kcontext.setVariable("result", false);
+					}
 				} else {
 					kcontext.setVariable("result", false);
 				}
