@@ -87,4 +87,22 @@ public class ClosingScripts implements java.io.Serializable {
 		}
 	}
 
+	public static void checkFunding(
+			org.kie.api.runtime.process.ProcessContext kcontext) {
+		System.out.println("response: "
+				+ kcontext.getVariable("response").toString());
+		try {
+			org.json.JSONObject responseObj = new org.json.JSONObject(kcontext
+					.getVariable("response").toString());
+			org.json.JSONArray fundingArray = responseObj
+					.getJSONArray("funding");
+			if (fundingArray.length() > 0)
+				kcontext.setVariable("result", "Approved");
+			else
+				kcontext.setVariable("result", "Rejected");
+		} catch (Exception e) {
+			System.out.println("Exception: " + e.toString());
+		}
+	}
+
 }
