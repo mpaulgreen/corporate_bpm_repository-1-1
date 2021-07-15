@@ -591,6 +591,10 @@ public class DecisionScript implements java.io.Serializable {
 				finalDecFacilities.clear();
 				kcontext.setVariable("finalFacilities", finalDecFacilities);
 			}
+			Integer counter = Integer.parseInt(kcontext.getVariable("count")
+					.toString());
+			counter = counter + 1;
+			kcontext.setVariable("count", Integer.toString(counter));
 		} catch (Exception e) {
 			System.out.println("Exception: " + e.toString());
 		}
@@ -1009,5 +1013,27 @@ public class DecisionScript implements java.io.Serializable {
 		kcontext.setVariable("payloadMap", requestMap);
 		System.out.println("payloadMap: "
 				+ kcontext.getVariable("payloadMap").toString());
+	}
+
+	public static void sendNotificationToRM(
+			org.kie.api.runtime.process.ProcessContext kcontext) {
+		System.out.println("In RM Message");
+		java.util.HashMap requestMap = new java.util.HashMap();
+		requestMap.put("dealId", kcontext.getVariable("requestId").toString());
+		requestMap.put("userId", kcontext.getVariable("relationshipManager")
+				.toString());
+		String approvalStatus = "";
+		if (kcontext.getVariable("approvalStatusId").toString().equals("01")) {
+			approvalStatus = "Approved";
+		} else if (kcontext.getVariable("approvalStatusId").toString()
+				.equals("02")) {
+			approvalStatus = "Declined";
+		}
+		String message = "Final Credit Decision for Facility "
+				+ kcontext.getVariable("facilityId").toString() + " is "
+				+ approvalStatus;
+		System.out.println("Message: " + message);
+		requestMap.put("messageDescription", message);
+		kcontext.setVariable("payloadMap", requestMap);
 	}
 }
