@@ -456,6 +456,7 @@ System.out.println("PayloadMap: "+kcontext.getVariable("payloadMap").toString())
           <bpmn2:dataInput id="_7BE15531-2F42-40DE-B578-FF5DABA72611_stageInputX" drools:dtype="String" itemSubjectRef="__7BE15531-2F42-40DE-B578-FF5DABA72611_stageInputXItem" name="stage"/>
           <bpmn2:dataInput id="_7BE15531-2F42-40DE-B578-FF5DABA72611_approverInputX" drools:dtype="String" itemSubjectRef="__7BE15531-2F42-40DE-B578-FF5DABA72611_approverInputXItem" name="approver"/>
           <bpmn2:dataInput id="_7BE15531-2F42-40DE-B578-FF5DABA72611_isCommitteeInputX" drools:dtype="Boolean" itemSubjectRef="__7BE15531-2F42-40DE-B578-FF5DABA72611_isCommitteeInputXItem" name="isCommittee"/>
+		  <bpmn2:dataInput id="_7BE15531-2F42-40DE-B578-FF5DABA72611_isTaskProcessInputX" drools:dtype="String" itemSubjectRef="__7BE15531-2F42-40DE-B578-FF5DABA72611_isTaskProcessInputXItem" name="isTaskProcess"/>
           <bpmn2:inputSet id="_W0WwweSmEeueLqY8McF1dQ">
             <bpmn2:dataInputRefs>_7BE15531-2F42-40DE-B578-FF5DABA72611_facilityIdInputX</bpmn2:dataInputRefs>
             <bpmn2:dataInputRefs>_7BE15531-2F42-40DE-B578-FF5DABA72611_partyIdInputX</bpmn2:dataInputRefs>
@@ -467,6 +468,7 @@ System.out.println("PayloadMap: "+kcontext.getVariable("payloadMap").toString())
             <bpmn2:dataInputRefs>_7BE15531-2F42-40DE-B578-FF5DABA72611_stageInputX</bpmn2:dataInputRefs>
             <bpmn2:dataInputRefs>_7BE15531-2F42-40DE-B578-FF5DABA72611_approverInputX</bpmn2:dataInputRefs>
             <bpmn2:dataInputRefs>_7BE15531-2F42-40DE-B578-FF5DABA72611_isCommitteeInputX</bpmn2:dataInputRefs>
+		    <bpmn2:dataInputRefs>_7BE15531-2F42-40DE-B578-FF5DABA72611_isTaskProcessInputX</bpmn2:dataInputRefs>
           </bpmn2:inputSet>
         </bpmn2:ioSpecification>
         <bpmn2:dataInputAssociation id="_W0WwwuSmEeueLqY8McF1dQ">
@@ -523,6 +525,13 @@ System.out.println("PayloadMap: "+kcontext.getVariable("payloadMap").toString())
         <bpmn2:dataInputAssociation id="_W0Ww2uSmEeueLqY8McF1dQ">
           <bpmn2:sourceRef>isCommittee</bpmn2:sourceRef>
           <bpmn2:targetRef>_7BE15531-2F42-40DE-B578-FF5DABA72611_isCommitteeInputX</bpmn2:targetRef>
+        </bpmn2:dataInputAssociation>
+		<bpmn2:dataInputAssociation id="_OToByuPpEeus0ueKloBWcg">
+          <bpmn2:targetRef>_7BE15531-2F42-40DE-B578-FF5DABA72611_isTaskProcessInputX</bpmn2:targetRef>
+          <bpmn2:assignment id="_OToBy-PpEeus0ueKloBWcg">
+            <bpmn2:from xsi:type="bpmn2:tFormalExpression" id="_OToBzOPpEeus0ueKloBWcg"><![CDATA[true]]></bpmn2:from>
+            <bpmn2:to xsi:type="bpmn2:tFormalExpression" id="_OToBzePpEeus0ueKloBWcg">_7BE15531-2F42-40DE-B578-FF5DABA72611_isTaskProcessInputX</bpmn2:to>
+          </bpmn2:assignment>
         </bpmn2:dataInputAssociation>
       </bpmn2:callActivity>
       <bpmn2:scriptTask id="_D47EDFD3-E699-4BC4-8122-765B16EB2F35" name="Get Approver" scriptFormat="http://www.java.com/java">
