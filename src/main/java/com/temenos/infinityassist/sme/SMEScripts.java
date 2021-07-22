@@ -22,5 +22,30 @@ public class SMEScripts implements java.io.Serializable {
 
 		}
 	}
-
+	
+	public static void checkSignedOfferLetter(
+			org.kie.api.runtime.process.ProcessContext kcontext, String documentResponse) {
+		try {
+		    org.json.JSONObject documents = new org.json.JSONObject(
+					documentResponse);
+			org.json.JSONArray documentsArray = documents
+						.getJSONArray("documents");
+			if (documentsArray.length() > 0) {
+				for (int index = 0; index < documentsArray.length(); index++) {
+					org.json.JSONObject doc = documentsArray.getJSONObject(index);
+					if (doc.get("documentType").equals("02")
+							&& doc.get("documentStatus").equals("05")) {
+						kcontext.setVariable("isSigned", true);
+						break;
+					} else {
+						kcontext.setVariable("isSigned", false);
+					}
+				}
+			} else {
+				kcontext.setVariable("isSigned", false);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception: " + e.toString());
+		}
+	}
 }
