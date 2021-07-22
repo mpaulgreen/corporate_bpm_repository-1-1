@@ -23,4 +23,31 @@ public class RetailScripts implements java.io.Serializable {
 		}
 	}
 
+	public static void setParties(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String relatedPartiesResponse) {
+		try {
+			org.json.JSONObject relatedParties = new org.json.JSONObject(
+					relatedPartiesResponse);
+			org.json.JSONArray relatedPartiesArray = relatedParties
+					.getJSONArray("relatedParties");
+			java.util.Set<String> prospectParties = new java.util.HashSet<>();
+			java.util.Set<String> existingParties = new java.util.HashSet<>();
+			for (int index = 0; index < relatedPartiesArray.length(); index++) {
+				org.json.JSONObject party = relatedPartiesArray
+						.getJSONObject(index);
+				String partyId = party.getString("relatedPartyId");
+				if (partyId.startsWith("NNVF")) {
+					prospectParties.add(partyId);
+				} else if (partyId.startsWith("ENVF")) {
+					existingParties.add(partyId);
+				}
+			}
+			kcontext.setVariable("prospectParties", prospectParties);
+			kcontext.setVariable("existingParties", existingParties);
+		} catch (Exception e) {
+
+		}
+	}
+
 }
