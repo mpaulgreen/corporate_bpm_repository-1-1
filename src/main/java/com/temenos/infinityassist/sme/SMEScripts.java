@@ -22,17 +22,19 @@ public class SMEScripts implements java.io.Serializable {
 
 		}
 	}
-	
+
 	public static void checkSignedOfferLetter(
-			org.kie.api.runtime.process.ProcessContext kcontext, String documentResponse) {
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String documentResponse) {
 		try {
-		    org.json.JSONObject documents = new org.json.JSONObject(
+			org.json.JSONObject documents = new org.json.JSONObject(
 					documentResponse);
 			org.json.JSONArray documentsArray = documents
-						.getJSONArray("documents");
+					.getJSONArray("documents");
 			if (documentsArray.length() > 0) {
 				for (int index = 0; index < documentsArray.length(); index++) {
-					org.json.JSONObject doc = documentsArray.getJSONObject(index);
+					org.json.JSONObject doc = documentsArray
+							.getJSONObject(index);
 					if (doc.get("documentType").equals("02")
 							&& doc.get("documentStatus").equals("05")) {
 						kcontext.setVariable("isSigned", true);
@@ -46,6 +48,33 @@ public class SMEScripts implements java.io.Serializable {
 			}
 		} catch (Exception e) {
 			System.out.println("Exception: " + e.toString());
+		}
+	}
+
+	public static void setParties(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String relatedPartiesResponse) {
+		try {
+			org.json.JSONObject relatedParties = new org.json.JSONObject(
+					relatedPartiesResponse);
+			org.json.JSONArray relatedPartiesArray = relatedParties
+					.getJSONArray("relatedParties");
+			java.util.Set<String> prospectParties = new java.util.HashSet<>();
+			java.util.Set<String> existingParties = new java.util.HashSet<>();
+			for (int index = 0; index < relatedPartiesArray.length(); index++) {
+				org.json.JSONObject party = relatedPartiesArray
+						.getJSONObject(index);
+				String partyId = party.getString("relatedPartyId");
+				if (partyId.startsWith("NNVF")) {
+					prospectParties.add(partyId);
+				} else if (partyId.startsWith("ENVF")) {
+					existingParties.add(partyId);
+				}
+			}
+			kcontext.setVariable("prospectParties", prospectParties);
+			kcontext.setVariable("existingParties", existingParties);
+		} catch (Exception e) {
+
 		}
 	}
 }
