@@ -77,4 +77,63 @@ public class SMEScripts implements java.io.Serializable {
 
 		}
 	}
+
+	public static void getFacilities(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String facilitiesResponse) {
+		try {
+			org.json.JSONObject facilities = new org.json.JSONObject(
+					facilitiesResponse);
+			org.json.JSONArray facilitiesArray = facilities
+					.getJSONArray("facilities");
+			java.util.ArrayList facilityList = new java.util.ArrayList<>();
+			for (int index = 0; index < facilitiesArray.length(); index++) {
+				org.json.JSONObject facility = facilitiesArray
+						.getJSONObject(index);
+				facilityList.add(facility.get("facilityId").toString());
+			}
+			kcontext.setVariable("facilitiesList", facilityList);
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void checkCreditDecision(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String decisionResponse) {
+		try {
+			org.json.JSONObject creditDecisions = new org.json.JSONObject(
+					decisionResponse);
+			if (creditDecisions.has("decisions")) {
+				org.json.JSONArray decisionsArray = creditDecisions
+						.getJSONArray("decisions");
+				String facilityId = kcontext.getVariable("facilityId")
+						.toString();
+				for (int index = 0; index < decisionsArray.length(); index++) {
+					org.json.JSONObject decision = decisionsArray
+							.getJSONObject(index);
+					if (decision.get("facilityId").toString()
+							.equals(facilityId)
+							&& decision.get("finalDecision").toString()
+									.equals("true")
+							&& (decision.get("decisionId").equals("02") || decision
+									.get("decisionId").equals("03"))) {
+						kcontext.setVariable("hasDecision", true);
+						if (decision.get("decisionId").equals("02"))
+							kcontext.setVariable("approvalStatusId", "01");
+						else if (decision.get("decisionId").equals("03"))
+							kcontext.setVariable("approvalStatusId", "02");
+						break;
+					} else {
+						kcontext.setVariable("hasDecision", "false");
+					}
+				}
+			} else {
+				kcontext.setVariable("hasDecision", "false");
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
 }
