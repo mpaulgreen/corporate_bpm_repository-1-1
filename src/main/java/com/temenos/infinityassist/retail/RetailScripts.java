@@ -50,4 +50,86 @@ public class RetailScripts implements java.io.Serializable {
 		}
 	}
 
+	public static void setUnderReviewFacilities(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String facilitiesResponse) {
+		try {
+			org.json.JSONObject responseJSON = new org.json.JSONObject(
+					facilitiesResponse);
+			org.json.JSONArray facilitiesArray = new org.json.JSONArray(
+					responseJSON.get("facilities").toString());
+			java.util.List<String> facilityList = new java.util.ArrayList<String>();
+			for (int i = 0; i < facilitiesArray.length(); i++) {
+				org.json.JSONObject facilityObj = new org.json.JSONObject(
+						facilitiesArray.get(i).toString());
+				if (facilityObj.get("approvalStatusId").toString().equals("03")) {
+					facilityList.add(facilityObj.get("facilityId").toString());
+				}
+			}
+			kcontext.setVariable("facilitiesList", facilityList);
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void setApprovedFacilities(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String facilitiesResponse) {
+		try {
+			org.json.JSONObject responseJSON = new org.json.JSONObject(
+					facilitiesResponse);
+			org.json.JSONArray facilitiesArray = new org.json.JSONArray(
+					responseJSON.get("facilities").toString());
+			java.util.List<String> facilityList = new java.util.ArrayList<String>();
+			for (int i = 0; i < facilitiesArray.length(); i++) {
+				org.json.JSONObject facilityObj = new org.json.JSONObject(
+						facilitiesArray.get(i).toString());
+				if (facilityObj.get("approvalStatusId").toString().equals("01")) {
+					facilityList.add(facilityObj.get("facilityId").toString());
+				}
+			}
+			kcontext.setVariable("facilitiesList", facilityList);
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void checkCreditDecision(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String decisionResponse) {
+		try {
+			org.json.JSONObject creditDecisions = new org.json.JSONObject(
+					decisionResponse);
+			if (creditDecisions.has("decisions")) {
+				org.json.JSONArray decisionsArray = creditDecisions
+						.getJSONArray("decisions");
+				String facilityId = kcontext.getVariable("facilityId")
+						.toString();
+				for (int index = 0; index < decisionsArray.length(); index++) {
+					org.json.JSONObject decision = decisionsArray
+							.getJSONObject(index);
+					if (decision.get("facilityId").toString()
+							.equals(facilityId)
+							&& decision.get("finalDecision").toString()
+									.equals("true")
+							&& (decision.get("decisionId").equals("02") || decision
+									.get("decisionId").equals("03"))) {
+						kcontext.setVariable("hasDecision", true);
+						if (decision.get("decisionId").equals("02"))
+							kcontext.setVariable("approvalStatusId", "01");
+						else if (decision.get("decisionId").equals("03"))
+							kcontext.setVariable("approvalStatusId", "02");
+						break;
+					} else {
+						kcontext.setVariable("hasDecision", false);
+					}
+				}
+			} else {
+				kcontext.setVariable("hasDecision", false);
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
 }
