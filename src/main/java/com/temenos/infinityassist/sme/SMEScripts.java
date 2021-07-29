@@ -35,8 +35,9 @@ public class SMEScripts implements java.io.Serializable {
 				for (int index = 0; index < documentsArray.length(); index++) {
 					org.json.JSONObject doc = documentsArray
 							.getJSONObject(index);
-					if (doc.get("documentType").equals("02")
-							&& doc.get("documentStatus").equals("05")) {
+					if (doc.get("documentType").toString().equals("02")
+							&& doc.get("documentStatus").toString()
+									.equals("05")) {
 						kcontext.setVariable("isSigned", true);
 						break;
 					} else {
@@ -61,16 +62,20 @@ public class SMEScripts implements java.io.Serializable {
 					.getJSONArray("relatedParties");
 			java.util.Set<String> prospectParties = new java.util.HashSet<>();
 			java.util.Set<String> existingParties = new java.util.HashSet<>();
+			java.util.Map<String, String> partyMap = new java.util.HashMap<>();
 			for (int index = 0; index < relatedPartiesArray.length(); index++) {
 				org.json.JSONObject party = relatedPartiesArray
 						.getJSONObject(index);
 				String partyId = party.getString("relatedPartyId");
+				String role = party.getString("relatedPartyRole");
+				partyMap.put(partyId, role);
 				if (partyId.startsWith("NNVF")) {
 					prospectParties.add(partyId);
 				} else if (partyId.startsWith("ENVF")) {
 					existingParties.add(partyId);
 				}
 			}
+			kcontext.setVariable("partyRoleMap", partyMap);
 			kcontext.setVariable("prospectParties", prospectParties);
 			kcontext.setVariable("existingParties", existingParties);
 		} catch (Exception e) {
@@ -86,11 +91,13 @@ public class SMEScripts implements java.io.Serializable {
 					facilitiesResponse);
 			org.json.JSONArray facilitiesArray = facilities
 					.getJSONArray("facilities");
-			java.util.ArrayList facilityList = new java.util.ArrayList<>();
+			java.util.List<String> facilityList = new java.util.ArrayList<String>();
 			for (int index = 0; index < facilitiesArray.length(); index++) {
 				org.json.JSONObject facility = facilitiesArray
 						.getJSONObject(index);
-				facilityList.add(facility.get("facilityId").toString());
+				if (facility.get("approvalStatusId").toString().equals("03")) {
+					facilityList.add(facility.get("facilityId").toString());
+				}
 			}
 			kcontext.setVariable("facilitiesList", facilityList);
 		} catch (Exception e) {
@@ -116,20 +123,23 @@ public class SMEScripts implements java.io.Serializable {
 							.equals(facilityId)
 							&& decision.get("finalDecision").toString()
 									.equals("true")
-							&& (decision.get("decisionId").equals("02") || decision
-									.get("decisionId").equals("03"))) {
+							&& (decision.get("decisionId").toString()
+									.equals("02") || decision.get("decisionId")
+									.toString().equals("03"))) {
 						kcontext.setVariable("hasDecision", true);
-						if (decision.get("decisionId").equals("02"))
+						if (decision.get("decisionId").toString().equals("02")) {
 							kcontext.setVariable("approvalStatusId", "01");
-						else if (decision.get("decisionId").equals("03"))
+						} else if (decision.get("decisionId").toString()
+								.equals("03")) {
 							kcontext.setVariable("approvalStatusId", "02");
+						}
 						break;
 					} else {
-						kcontext.setVariable("hasDecision", "false");
+						kcontext.setVariable("hasDecision", false);
 					}
 				}
 			} else {
-				kcontext.setVariable("hasDecision", "false");
+				kcontext.setVariable("hasDecision", false);
 			}
 		} catch (Exception e) {
 
