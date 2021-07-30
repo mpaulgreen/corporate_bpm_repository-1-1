@@ -132,4 +132,17 @@ public class RetailScripts implements java.io.Serializable {
 		}
 	}
 
+	public static void setProductLineId(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String facilityResponse) {
+		try {
+			org.json.JSONObject responseJSON = new org.json.JSONObject(
+					facilityResponse);
+			kcontext.setVariable("productLineId",
+					responseJSON.getString("productLineId"));
+		} catch (Exception e) {
+
+		}
+	}
+
 }
