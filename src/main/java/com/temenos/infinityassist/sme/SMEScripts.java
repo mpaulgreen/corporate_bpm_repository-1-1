@@ -22,6 +22,21 @@ public class SMEScripts implements java.io.Serializable {
 
 		}
 	}
+	
+	public static void setCompanyCifId(
+			org.kie.api.runtime.process.ProcessContext kcontext) {
+		try {
+			String response = (String) kcontext.getVariable("response");
+			org.json.JSONObject responseJSON = new org.json.JSONObject(response);
+			String partyId = kcontext.getVariable("prospectPartyId").toString();
+			if (partyId.equals("NNVFCompany")) { 
+			    kcontext.setVariable("companyCifId", 
+			            responseJSON.getString("coreCustomerId"));
+			}
+		} catch (Exception e) {
+
+		}
+	}
 
 	public static void checkSignedOfferLetter(
 			org.kie.api.runtime.process.ProcessContext kcontext,
