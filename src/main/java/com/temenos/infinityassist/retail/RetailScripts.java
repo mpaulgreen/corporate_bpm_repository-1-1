@@ -145,4 +145,19 @@ public class RetailScripts implements java.io.Serializable {
 		}
 	}
 
+	public static void setCoreReferenceMap(
+			org.kie.api.runtime.process.ProcessContext kcontext) {
+		try {
+			org.json.JSONObject accountResponse = new org.json.JSONObject(
+					kcontext.getVariable("accountResponse"));
+			String accountId = accountResponse.getString("accountID");
+			java.util.Map<String, String> coreReference = new java.util.HashMap<String, String>();
+			coreReference.put("id", accountId);
+			coreReference.put("type", "ACCOUNT");
+			kcontext.setVariable("coreReference", coreReference);
+		} catch (Exception e) {
+
+		}
+	}
+
 }
