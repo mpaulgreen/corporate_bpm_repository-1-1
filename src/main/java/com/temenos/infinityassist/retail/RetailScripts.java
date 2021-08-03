@@ -149,12 +149,40 @@ public class RetailScripts implements java.io.Serializable {
 			org.kie.api.runtime.process.ProcessContext kcontext) {
 		try {
 			org.json.JSONObject accountResponse = new org.json.JSONObject(
-					kcontext.getVariable("accountResponse"));
+					kcontext.getVariable("accountResponse").toString());
 			String accountId = accountResponse.getString("accountID");
 			java.util.Map<String, String> coreReference = new java.util.HashMap<String, String>();
 			coreReference.put("id", accountId);
 			coreReference.put("type", "ACCOUNT");
 			kcontext.setVariable("coreReference", coreReference);
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void setPartiesByApplicantType(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String relatedPartiesResponse) {
+		try {
+			org.json.JSONObject relatedParties = new org.json.JSONObject(
+					relatedPartiesResponse);
+			org.json.JSONArray relatedPartiesArray = relatedParties
+					.getJSONArray("relatedParties");
+			String applicantPartyId = "";
+			java.util.Set<String> coApplicantPartyIds = new java.util.HashSet<>();
+			for (int index = 0; index < relatedPartiesArray.length(); index++) {
+				org.json.JSONObject party = relatedPartiesArray
+						.getJSONObject(index);
+				String partyId = party.getString("relatedPartyId");
+				String partyRole = party.getString("relatedPartyRole");
+				if (partyRole.equals("01")) {
+					applicantPartyId = partyId;
+				} else {
+					coApplicantPartyIds.add(partyId);
+				}
+			}
+			kcontext.setVariable("applicantPartyId", applicantPartyId);
+			kcontext.setVariable("coApplicantPartyIds", coApplicantPartyIds);
 		} catch (Exception e) {
 
 		}
