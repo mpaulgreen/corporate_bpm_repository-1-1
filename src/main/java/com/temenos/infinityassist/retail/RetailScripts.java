@@ -141,7 +141,7 @@ public class RetailScripts implements java.io.Serializable {
 			kcontext.setVariable("productLineId",
 					responseJSON.getString("productLineId"));
 		} catch (Exception e) {
-
+			
 		}
 	}
 
@@ -154,6 +154,21 @@ public class RetailScripts implements java.io.Serializable {
 			java.util.Map<String, String> coreReference = new java.util.HashMap<String, String>();
 			coreReference.put("id", accountId);
 			coreReference.put("type", "ACCOUNT");
+			kcontext.setVariable("coreReference", coreReference);
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void setCoreReferenceMapForCard(
+			org.kie.api.runtime.process.ProcessContext kcontext) {
+		try {
+			org.json.JSONObject accountResponse = new org.json.JSONObject(
+					kcontext.getVariable("accountResponse").toString());
+			String cardNumber = accountResponse.getString("cardNumber");
+			java.util.Map<String, String> coreReference = new java.util.HashMap<String, String>();
+			coreReference.put("id", cardNumber);
+			coreReference.put("type", "Card");
 			kcontext.setVariable("coreReference", coreReference);
 		} catch (Exception e) {
 
