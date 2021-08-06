@@ -67,6 +67,35 @@ public class SMEScripts implements java.io.Serializable {
 		}
 	}
 
+	public static void checkApprovedOfferLetter(
+			org.kie.api.runtime.process.ProcessContext kcontext,
+			String documentResponse) {
+		try {
+			org.json.JSONObject documents = new org.json.JSONObject(
+					documentResponse);
+			org.json.JSONArray documentsArray = documents
+					.getJSONArray("documents");
+			if (documentsArray.length() > 0) {
+				for (int index = 0; index < documentsArray.length(); index++) {
+					org.json.JSONObject doc = documentsArray
+							.getJSONObject(index);
+					if (doc.get("documentType").toString().equals("02")
+							&& doc.get("documentStatus").toString()
+									.equals("01")) {
+						kcontext.setVariable("isApproved", true);
+						break;
+					} else {
+						kcontext.setVariable("isApproved", false);
+					}
+				}
+			} else {
+				kcontext.setVariable("isApproved", false);
+			}
+		} catch (Exception e) {
+			System.out.println("Exception: " + e.toString());
+		}
+	}
+
 	public static void setParties(
 			org.kie.api.runtime.process.ProcessContext kcontext,
 			String relatedPartiesResponse) {
@@ -115,6 +144,18 @@ public class SMEScripts implements java.io.Serializable {
 				}
 			}
 			kcontext.setVariable("facilitiesList", facilityList);
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void setTransactionId(
+			org.kie.api.runtime.process.ProcessContext kcontext) {
+		try {
+			String response = (String) kcontext.getVariable("response");
+			org.json.JSONObject responseJSON = new org.json.JSONObject(response);
+			kcontext.setVariable("transactionId",
+					responseJSON.getString("transactionId"));
 		} catch (Exception e) {
 
 		}
