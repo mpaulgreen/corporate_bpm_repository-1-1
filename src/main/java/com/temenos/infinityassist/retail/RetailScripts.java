@@ -141,7 +141,7 @@ public class RetailScripts implements java.io.Serializable {
 			kcontext.setVariable("productLineId",
 					responseJSON.getString("productLineId"));
 		} catch (Exception e) {
-			
+
 		}
 	}
 
@@ -198,6 +198,22 @@ public class RetailScripts implements java.io.Serializable {
 			}
 			kcontext.setVariable("applicantPartyId", applicantPartyId);
 			kcontext.setVariable("coApplicantPartyIds", coApplicantPartyIds);
+			java.util.Set<String> allPartyIds = new java.util.HashSet<>();
+			allPartyIds.add(applicantPartyId);
+			allPartyIds.addAll(coApplicantPartyIds);
+			kcontext.setVariable("partyIds", allPartyIds);
+		} catch (Exception e) {
+
+		}
+	}
+
+	public static void setTransactionId(
+			org.kie.api.runtime.process.ProcessContext kcontext) {
+		try {
+			String response = (String) kcontext.getVariable("receiptResponse");
+			org.json.JSONObject responseJSON = new org.json.JSONObject(response);
+			kcontext.setVariable("transactionId",
+					responseJSON.getString("transactionId"));
 		} catch (Exception e) {
 
 		}
