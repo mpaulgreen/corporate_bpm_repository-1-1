@@ -151,10 +151,14 @@ public class RetailScripts implements java.io.Serializable {
 			org.json.JSONObject accountResponse = new org.json.JSONObject(
 					kcontext.getVariable("accountResponse").toString());
 			String accountId = accountResponse.getString("accountID");
+			String effectiveDate = accountResponse.optString("effectiveDate");
 			java.util.Map<String, String> coreReference = new java.util.HashMap<String, String>();
 			coreReference.put("id", accountId);
 			coreReference.put("type", "ACCOUNT");
 			kcontext.setVariable("coreReference", coreReference);
+			if (effectiveDate != null && effectiveDate.length() != 0) {
+				kcontext.setVariable("startDate", effectiveDate);
+			}
 		} catch (Exception e) {
 
 		}
@@ -166,10 +170,14 @@ public class RetailScripts implements java.io.Serializable {
 			org.json.JSONObject accountResponse = new org.json.JSONObject(
 					kcontext.getVariable("accountResponse").toString());
 			String cardNumber = accountResponse.getString("cardNumber");
+			String effectiveDate = accountResponse.optString("effectiveDate");
 			java.util.Map<String, String> coreReference = new java.util.HashMap<String, String>();
 			coreReference.put("id", cardNumber);
 			coreReference.put("type", "Card");
 			kcontext.setVariable("coreReference", coreReference);
+			if (effectiveDate != null && effectiveDate.length() != 0) {
+				kcontext.setVariable("startDate", effectiveDate);
+			}
 		} catch (Exception e) {
 
 		}
