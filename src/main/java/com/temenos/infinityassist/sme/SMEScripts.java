@@ -22,16 +22,16 @@ public class SMEScripts implements java.io.Serializable {
 
 		}
 	}
-	
+
 	public static void setCompanyCifId(
 			org.kie.api.runtime.process.ProcessContext kcontext) {
 		try {
 			String response = (String) kcontext.getVariable("response");
 			org.json.JSONObject responseJSON = new org.json.JSONObject(response);
 			String partyId = kcontext.getVariable("prospectPartyId").toString();
-			if (partyId.equals("NNVFCompany")) { 
-			    kcontext.setVariable("companyCifId", 
-			            responseJSON.getString("coreCustomerId"));
+			if (partyId.equals("NNVFCompany")) {
+				kcontext.setVariable("companyCifId",
+						responseJSON.getString("coreCustomerId"));
 			}
 		} catch (Exception e) {
 
@@ -50,7 +50,7 @@ public class SMEScripts implements java.io.Serializable {
 				for (int index = 0; index < documentsArray.length(); index++) {
 					org.json.JSONObject doc = documentsArray
 							.getJSONObject(index);
-					if (doc.get("documentType").toString().equals("02")
+					if (doc.get("documentType").toString().equals("35")
 							&& doc.get("documentStatus").toString()
 									.equals("05")) {
 						kcontext.setVariable("isSigned", true);
@@ -79,7 +79,7 @@ public class SMEScripts implements java.io.Serializable {
 				for (int index = 0; index < documentsArray.length(); index++) {
 					org.json.JSONObject doc = documentsArray
 							.getJSONObject(index);
-					if (doc.get("documentType").toString().equals("02")
+					if (doc.get("documentType").toString().equals("35")
 							&& doc.get("documentStatus").toString()
 									.equals("01")) {
 						kcontext.setVariable("isApproved", true);
