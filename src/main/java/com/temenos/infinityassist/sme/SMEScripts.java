@@ -23,16 +23,15 @@ public class SMEScripts implements java.io.Serializable {
 		}
 	}
 
-	public static void setCompanyCifId(
+	public static void setCompanyIds(
 			org.kie.api.runtime.process.ProcessContext kcontext) {
 		try {
 			String response = (String) kcontext.getVariable("response");
 			org.json.JSONObject responseJSON = new org.json.JSONObject(response);
-			String partyId = kcontext.getVariable("prospectPartyId").toString();
-			if (partyId.equals("NNVFCompany")) {
-				kcontext.setVariable("companyCifId",
-						responseJSON.getString("coreCustomerId"));
-			}
+			kcontext.setVariable("companyCifId",
+					responseJSON.getString("coreCustomerId"));
+			kcontext.setVariable("companyPartyId",
+					responseJSON.getString("partyID"));
 		} catch (Exception e) {
 
 		}
@@ -113,9 +112,9 @@ public class SMEScripts implements java.io.Serializable {
 				String partyId = party.getString("relatedPartyId");
 				String role = party.getString("relatedPartyRole");
 				partyMap.put(partyId, role);
-				if (partyId.startsWith("NNVF")) {
+				if (partyId.startsWith("NNVF") && !role.equals("01")) {
 					prospectParties.add(partyId);
-				} else if (partyId.startsWith("ENVF")) {
+				} else if (partyId.startsWith("ENVF") && !role.equals("01")) {
 					existingParties.add(partyId);
 				}
 			}
