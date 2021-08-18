@@ -254,40 +254,48 @@ public class PrescreeningScripts implements java.io.Serializable {
 			org.json.JSONObject responseObj = new org.json.JSONObject(kcontext
 					.getVariable("response").toString());
 			org.json.JSONArray pricingArr = responseObj.getJSONArray("pricing");
-			for (int i = 0; i < pricingArr.length(); i++) {
-				org.json.JSONObject indPricingEle = new org.json.JSONObject(
-						pricingArr.get(i).toString());
-				if (indPricingEle.get("interestRateType").equals("01")) {
-					org.json.JSONObject fixEle = new org.json.JSONObject(
-							indPricingEle.get("fixedInterestRate").toString());
-					if (!fixEle.isNull("interestSpread")
-							&& !fixEle.isNull("indicativeBaseRate")
-							&& !fixEle.isNull("paymentFrequency")
-							&& !fixEle.isNull("period")) {
-						kcontext.setVariable("result", true);
-					}
-				} else if (indPricingEle.get("interestRateType").equals("02")) {
-					org.json.JSONObject periodEle = new org.json.JSONObject(
-							indPricingEle.get("periodicInterestRate")
-									.toString());
-					if (!periodEle.isNull("interestSpread")
-							&& !periodEle.isNull("indicativeBaseRate")
-							&& !periodEle.isNull("paymentFrequency")
-							&& !periodEle.isNull("period")) {
-						kcontext.setVariable("result", true);
-					}
+			if (pricingArr.length() > 0) {
+				for (int i = 0; i < pricingArr.length(); i++) {
+					org.json.JSONObject indPricingEle = new org.json.JSONObject(
+							pricingArr.get(i).toString());
+					if (indPricingEle.get("interestRateType").equals("01")) {
+						org.json.JSONObject fixEle = new org.json.JSONObject(
+								indPricingEle.get("fixedInterestRate")
+										.toString());
+						if (!fixEle.isNull("interestSpread")
+								&& !fixEle.isNull("indicativeBaseRate")
+								&& !fixEle.isNull("paymentFrequency")
+								&& !fixEle.isNull("period")) {
+							kcontext.setVariable("result", true);
+						}
+					} else if (indPricingEle.get("interestRateType").equals(
+							"02")) {
+						org.json.JSONObject periodEle = new org.json.JSONObject(
+								indPricingEle.get("periodicInterestRate")
+										.toString());
+						if (!periodEle.isNull("interestSpread")
+								&& !periodEle.isNull("indicativeBaseRate")
+								&& !periodEle.isNull("paymentFrequency")
+								&& !periodEle.isNull("period")) {
+							kcontext.setVariable("result", true);
+						}
 
-				} else if (indPricingEle.get("interestRateType").equals("03")) {
-					org.json.JSONObject floatingEle = new org.json.JSONObject(
-							indPricingEle.get("floatingInterestRate")
-									.toString());
-					if (!floatingEle.isNull("interestSpread")
-							&& !floatingEle.isNull("indicativeBaseRate")
-							&& !floatingEle.isNull("paymentFrequency")
-							&& !floatingEle.isNull("period")) {
-						kcontext.setVariable("result", true);
+					} else if (indPricingEle.get("interestRateType").equals(
+							"03")) {
+						org.json.JSONObject floatingEle = new org.json.JSONObject(
+								indPricingEle.get("floatingInterestRate")
+										.toString());
+						if (!floatingEle.isNull("interestSpread")
+								&& !floatingEle.isNull("indicativeBaseRate")
+								&& !floatingEle.isNull("paymentFrequency")
+								&& !floatingEle.isNull("period")) {
+							kcontext.setVariable("result", true);
+						}
 					}
 				}
+			} else {
+				kcontext.setVariable("result", false);
+
 			}
 		} catch (Exception e) {
 			System.out.println("Exception: " + e.toString());
