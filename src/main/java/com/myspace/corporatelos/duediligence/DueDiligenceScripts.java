@@ -117,18 +117,18 @@ public class DueDiligenceScripts implements java.io.Serializable {
 								org.json.JSONObject indEle = new org.json.JSONObject(
 										conditionArray.get(j).toString());
 								if (!indEle.isNull("conditionType")
-										&& (!indEle.get("conditionType")
+										&& (indEle.get("conditionType")
 												.equals("01"))) {
 									if (!indEle.isNull("conditionStatus")
-											&& (!indEle.get("conditionStatus")
+											&& (indEle.get("conditionStatus")
 													.equals("01"))) {
-										kcontext.setVariable("result", true);
+										kcontext.setVariable("result", false);
 										break;
 									} else {
-										kcontext.setVariable("result", false);
+										kcontext.setVariable("result", true);
 									}
 								} else {
-									kcontext.setVariable("result", false);
+									kcontext.setVariable("result", true);
 								}
 							}
 						} else {
